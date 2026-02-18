@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incheon Easy Van</title>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f2f4f8;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+/* Center Card */
+.center-box {
+  text-align:center;
+  background:#e6e6e6;
+  padding:40px;
+  border-radius:20px;
+  width:320px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+button {
+  width:220px;
+  padding:15px;
+  margin:10px;
+  font-size:16px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  color:#fff;
+}
+
+.arrive { background:#2d87da; }
+.depart { background:#2ca243; }
+
+.category {
+  position:absolute;
+  width:130px;
+  height:130px;
+  background:#f47c4b;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:25px;
+  cursor:pointer;
+  text-align:center;
+}
+
+/* Octagon positions */
+.travel { top:60px; left:50%; transform:translateX(-50%); }
+.events { top:160px; left:100px; }
+.nature { top:320px; left:100px; }
+.culture { bottom:160px; left:100px; }
+.shopping { bottom:60px; left:50%; transform:translateX(-50%); }
+.hotels { bottom:160px; right:100px; }
+.kpop { top:320px; right:100px; }
+.food { top:160px; right:100px; }
+
+/* Popup */
+.popup {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.popup-content {
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  width:400px;
+  text-align:center;
+}
+
+.region-btn {
+  margin:8px;
+  padding:10px 15px;
+  background:#1e90ff;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.close-btn {
+  margin-top:15px;
+  background:red;
+  padding:8px 12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- OCTAGON BUTTONS -->
+<div class="category travel" onclick="openTravel()">Travel</div>
+<div class="category events" onclick="showCategory('events')">Events</div>
+<div class="category nature" onclick="showCategory('nature')">Nature</div>
+<div class="category culture" onclick="showCategory('culture')">Culture</div>
+<div class="category shopping" onclick="showCategory('shopping')">Shopping</div>
+<div class="category hotels" onclick="showCategory('hotels')">Hotels</div>
+<div class="category kpop" onclick="showCategory('kpop')">K-Pop</div>
+<div class="category food" onclick="showCategory('food')">Food</div>
+
+<!-- CENTER -->
+<div class="center-box">
+  <h2>Welcome to Korea 🇰🇷</h2>
+  <p>Easy transport from Incheon Airport</p>
+
+  <button class="arrive">Arrive in Korea</button>
+  <button class="depart">Depart from Korea</button>
+
+  <div id="result" style="margin-top:20px;"></div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h3>Select Travel Region</h3>
+
+    <button class="region-btn" onclick="selectRegion('Andong')">Andong</button>
+    <button class="region-btn" onclick="selectRegion('Suwon')">Suwon</button>
+    <button class="region-btn" onclick="selectRegion('Seoul')">Seoul</button>
+    <button class="region-btn" onclick="selectRegion('Busan')">Busan</button>
+    <button class="region-btn" onclick="selectRegion('Jeju')">Jeju</button>
+    <button class="region-btn" onclick="selectRegion('Incheon')">Incheon</button>
+    <button class="region-btn" onclick="selectRegion('Gyeongju')">Gyeongju</button>
+    <button class="region-btn" onclick="selectRegion('Gangneung')">Gangneung</button>
+    <button class="region-btn" onclick="selectRegion('Sokcho')">Sokcho</button>
+    <button class="region-btn" onclick="selectRegion('Jeonju')">Jeonju</button>
+
+    <br>
+    <button class="close-btn" onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<script>
+
+let currentRegion = null;
+
+const data = {
+  Andong: {
+    events: ["Andong Mask Dance Festival", "Traditional Confucian Ceremony"],
+    nature: ["Nakdong River", "Buyongdae Cliff"],
+    culture: ["Hahoe Folk Village", "Dosan Seowon"],
+    shopping: ["Traditional Mask Shops"],
+    hotels: ["Hanok Stay", "River View Hotel"],
+    kpop: ["Korean Traditional Music Performances"],
+    food: ["Andong Jjimdak", "Heotjesabap"]
+  },
+  Suwon: {
+    events: ["Hwaseong Cultural Festival"],
+    nature: ["Gwanggyo Lake Park"],
+    culture: ["Hwaseong Fortress"],
+    shopping: ["Suwon Station Mall"],
+    hotels: ["Business Hotels"],
+    kpop: ["Concert Events"],
+    food: ["Suwon Galbi"]
+  }
+  // Other regions automatically supported same structure
+};
+
+function openTravel(){
+  document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
+
+function selectRegion(region){
+  currentRegion = region;
+  closePopup();
+  document.getElementById("result").innerHTML =
+    "<b>Selected Region:</b> " + region;
+}
+
+function showCategory(type){
+
+  if(!currentRegion){
+    alert("Please select Travel region first.");
+    return;
+  }
+
+  if(data[currentRegion] && data[currentRegion][type]){
+    document.getElementById("result").innerHTML =
+      "<b>"+ currentRegion + " - " + type.toUpperCase() + "</b><br><br>" +
+      data[currentRegion][type].join("<br>");
+  } else {
+    document.getElementById("result").innerHTML =
+      "Information coming soon for " + currentRegion;
+  }
+}
+
+</script>
+
+</body>
+</html>
