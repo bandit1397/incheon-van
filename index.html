@@ -39,7 +39,9 @@ button {
 
 .arrive { background:#2d87da; }
 .depart { background:#2ca243; }
+.book { background:#ff7f00; }
 
+/* Category buttons */
 .category {
   position:absolute;
   width:130px;
@@ -85,6 +87,20 @@ button {
   text-align:center;
 }
 
+/* Booking form */
+input, select {
+  width:90%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+.submit-btn {
+  background:#28a745;
+  color:#fff;
+}
+
 .region-btn {
   margin:8px;
   padding:10px 15px;
@@ -105,7 +121,7 @@ button {
 
 <body>
 
-<!-- OCTAGON BUTTONS -->
+<!-- CATEGORY -->
 <div class="category travel" onclick="openTravel()">Travel</div>
 <div class="category events" onclick="showCategory('events')">Events</div>
 <div class="category nature" onclick="showCategory('nature')">Nature</div>
@@ -128,10 +144,13 @@ button {
     <button class="depart">Depart from Korea</button>
   </a>
 
+  <!-- NEW BOOK BUTTON -->
+  <button class="book" onclick="openBooking()">Book Now</button>
+
   <div id="result" style="margin-top:20px;"></div>
 </div>
 
-<!-- POPUP -->
+<!-- REGION POPUP -->
 <div class="popup" id="popup">
   <div class="popup-content">
     <h3>Select Travel Region</h3>
@@ -152,6 +171,22 @@ button {
   </div>
 </div>
 
+<!-- BOOKING POPUP -->
+<div class="popup" id="booking">
+  <div class="popup-content">
+    <h3>Book Your Ride 🚐</h3>
+
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="pickup" placeholder="Pickup Location">
+    <input type="text" id="dropoff" placeholder="Drop-off Location">
+    <input type="datetime-local" id="date">
+    <input type="number" id="people" placeholder="Passengers">
+
+    <button class="submit-btn" onclick="sendBooking()">Submit Booking</button>
+    <button class="close-btn" onclick="closeBooking()">Close</button>
+  </div>
+</div>
+
 <script>
 
 let currentRegion = null;
@@ -159,7 +194,7 @@ let currentRegion = null;
 const data = {
   Andong: {
     events: [
-      "<a href='https://bandit1397.blogspot.com' target='_blank' style='color:blue; text-decoration:underline;'>Andong Mask Dance Festival</a>",
+      "<a href='https://bandit1397.blogspot.com' target='_blank'>Andong Mask Dance Festival</a>",
       "Traditional Confucian Ceremony"
     ],
     nature: ["Nakdong River", "Buyongdae Cliff"],
@@ -178,7 +213,6 @@ const data = {
     kpop: ["Concert Events"],
     food: ["Suwon Galbi"]
   }
-  // Other regions automatically supported same structure
 };
 
 function openTravel(){
@@ -197,7 +231,6 @@ function selectRegion(region){
 }
 
 function showCategory(type){
-
   if(!currentRegion){
     alert("Please select Travel region first.");
     return;
@@ -211,6 +244,27 @@ function showCategory(type){
     document.getElementById("result").innerHTML =
       "Information coming soon for " + currentRegion;
   }
+}
+
+/* BOOKING */
+function openBooking(){
+  document.getElementById("booking").style.display="flex";
+}
+
+function closeBooking(){
+  document.getElementById("booking").style.display="none";
+}
+
+function sendBooking(){
+  let name = document.getElementById("name").value;
+  let pickup = document.getElementById("pickup").value;
+  let dropoff = document.getElementById("dropoff").value;
+  let date = document.getElementById("date").value;
+  let people = document.getElementById("people").value;
+
+  let message = `Hello, I want to book a ride.%0AName: ${name}%0APickup: ${pickup}%0ADropoff: ${dropoff}%0ADate: ${date}%0APeople: ${people}`;
+
+  window.open(`https://wa.me/821025963169?text=${message}`, "_blank");
 }
 
 </script>
