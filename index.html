@@ -48,12 +48,37 @@ button {
 
 /* Category grid */
 .categories {
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:10px;
-  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  margin-top:15px;
   width:100%;
   max-width:350px;
+}
+
+/* Travel centered */
+.category.travel {
+  width:70%;
+  background:#f47c4b;
+  padding:14px;
+  border-radius:15px;
+  text-align:center;
+}
+
+/* Other categories grid */
+.sub-categories {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:8px;
+  width:100%;
+}
+
+.category.small {
+  padding:12px;
+  font-size:14px;
+  border-radius:12px;
+  background:#f47c4b;
 }
 
 .category {
@@ -138,9 +163,24 @@ input {
     <div id="result" style="margin-top:15px;"></div>
   </div>
 
-  <!-- CATEGORY GRID -->
+  <!-- CATEGORY -->
   <div class="categories">
-    <div class="category" onclick="openTravel()">Travel</div>
+
+    <!-- Travel center -->
+    <div class="category travel" onclick="openTravel()">Travel</div>
+
+    <!-- Others -->
+    <div class="sub-categories">
+      <div class="category small" onclick="showCategory('events')">Events</div>
+      <div class="category small" onclick="showCategory('nature')">Nature</div>
+      <div class="category small" onclick="showCategory('culture')">Culture</div>
+      <div class="category small" onclick="showCategory('shopping')">Shopping</div>
+      <div class="category small" onclick="showCategory('hotels')">Hotels</div>
+      <div class="category small" onclick="showCategory('kpop')">K-Pop</div>
+      <div class="category small" onclick="showCategory('food')">Food</div>
+    </div>
+
+  </div>
     <div class="category" onclick="showCategory('events')">Events</div>
     <div class="category" onclick="showCategory('nature')">Nature</div>
     <div class="category" onclick="showCategory('culture')">Culture</div>
