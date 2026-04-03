@@ -10,26 +10,31 @@ body {
   margin:0;
   font-family: Arial, sans-serif;
   background:#f2f4f8;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
 }
 
-/* Center Card */
+/* Mobile-first layout */
+.container {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+}
+
+/* Center box */
 .center-box {
   text-align:center;
   background:#e6e6e6;
-  padding:40px;
+  padding:25px;
   border-radius:20px;
-  width:320px;
+  width:100%;
+  max-width:350px;
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
 
 button {
-  width:220px;
-  padding:15px;
-  margin:10px;
+  width:100%;
+  padding:12px;
+  margin:8px 0;
   font-size:16px;
   border:none;
   border-radius:12px;
@@ -41,32 +46,38 @@ button {
 .depart { background:#2ca243; }
 .book { background:#ff7f00; }
 
-/* Category buttons */
-.category {
-  position:absolute;
-  width:130px;
-  height:130px;
-  background:#f47c4b;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:25px;
-  cursor:pointer;
-  text-align:center;
+/* Category grid */
+.categories {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px;
+  margin-top:20px;
+  width:100%;
+  max-width:350px;
 }
 
-/* Octagon positions */
-.travel { top:60px; left:50%; transform:translateX(-50%); }
-.events { top:160px; left:100px; }
-.nature { top:320px; left:100px; }
-.culture { bottom:160px; left:100px; }
-.shopping { bottom:60px; left:50%; transform:translateX(-50%); }
-.hotels { bottom:160px; right:100px; }
-.kpop { top:320px; right:100px; }
-.food { top:160px; right:100px; }
+.category {
+  background:#f47c4b;
+  color:white;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+  cursor:pointer;
+}
 
-/* Popup */
+/* Tablet & PC */
+@media(min-width:768px){
+  .categories{
+    grid-template-columns: repeat(4, 1fr);
+    max-width:700px;
+  }
+
+  .center-box{
+    max-width:400px;
+  }
+}
+
+/* Popup same */
 .popup {
   position:fixed;
   top:0;
@@ -81,14 +92,14 @@ button {
 
 .popup-content {
   background:white;
-  padding:30px;
+  padding:20px;
   border-radius:15px;
-  width:400px;
+  width:90%;
+  max-width:400px;
   text-align:center;
 }
 
-/* Booking form */
-input, select {
+input {
   width:90%;
   padding:10px;
   margin:8px 0;
@@ -96,177 +107,114 @@ input, select {
   border:1px solid #ccc;
 }
 
-.submit-btn {
-  background:#28a745;
-  color:#fff;
-}
+.submit-btn { background:#28a745; }
+.close-btn { background:red; margin-top:10px; }
 
 .region-btn {
-  margin:8px;
-  padding:10px 15px;
+  margin:5px;
+  padding:8px 10px;
   background:#1e90ff;
   color:white;
   border:none;
   border-radius:8px;
-  cursor:pointer;
 }
 
-.close-btn {
-  margin-top:15px;
-  background:red;
-  padding:8px 12px;
-}
 </style>
 </head>
 
 <body>
 
-<!-- CATEGORY -->
-<div class="category travel" onclick="openTravel()">Travel</div>
-<div class="category events" onclick="showCategory('events')">Events</div>
-<div class="category nature" onclick="showCategory('nature')">Nature</div>
-<div class="category culture" onclick="showCategory('culture')">Culture</div>
-<div class="category shopping" onclick="showCategory('shopping')">Shopping</div>
-<div class="category hotels" onclick="showCategory('hotels')">Hotels</div>
-<div class="category kpop" onclick="showCategory('kpop')">K-Pop</div>
-<div class="category food" onclick="showCategory('food')">Food</div>
+<div class="container">
 
-<!-- CENTER -->
-<div class="center-box">
-  <h2>Welcome to Korea 🇰🇷</h2>
-  <p>Easy transport from Incheon Airport</p>
+  <!-- CENTER -->
+  <div class="center-box">
+    <h2>Welcome to Korea 🇰🇷</h2>
+    <p>Easy transport from Incheon Airport</p>
 
-  <a href="arrive.html">
-    <button class="arrive">Arrive in Korea</button>
-  </a>
+    <a href="arrive.html"><button class="arrive">Arrive</button></a>
+    <a href="depart.html"><button class="depart">Depart</button></a>
+    <button class="book" onclick="openBooking()">Book Now</button>
 
-  <a href="depart.html">
-    <button class="depart">Depart from Korea</button>
-  </a>
+    <div id="result" style="margin-top:15px;"></div>
+  </div>
 
-  <!-- NEW BOOK BUTTON -->
-  <button class="book" onclick="openBooking()">Book Now</button>
+  <!-- CATEGORY GRID -->
+  <div class="categories">
+    <div class="category" onclick="openTravel()">Travel</div>
+    <div class="category" onclick="showCategory('events')">Events</div>
+    <div class="category" onclick="showCategory('nature')">Nature</div>
+    <div class="category" onclick="showCategory('culture')">Culture</div>
+    <div class="category" onclick="showCategory('shopping')">Shopping</div>
+    <div class="category" onclick="showCategory('hotels')">Hotels</div>
+    <div class="category" onclick="showCategory('kpop')">K-Pop</div>
+    <div class="category" onclick="showCategory('food')">Food</div>
+  </div>
 
-  <div id="result" style="margin-top:20px;"></div>
 </div>
 
-<!-- REGION POPUP -->
+<!-- POPUPS (same logic) -->
 <div class="popup" id="popup">
   <div class="popup-content">
-    <h3>Select Travel Region</h3>
-
-    <button class="region-btn" onclick="selectRegion('Andong')">Andong</button>
-    <button class="region-btn" onclick="selectRegion('Suwon')">Suwon</button>
+    <h3>Select Region</h3>
     <button class="region-btn" onclick="selectRegion('Seoul')">Seoul</button>
     <button class="region-btn" onclick="selectRegion('Busan')">Busan</button>
-    <button class="region-btn" onclick="selectRegion('Jeju')">Jeju</button>
     <button class="region-btn" onclick="selectRegion('Incheon')">Incheon</button>
-    <button class="region-btn" onclick="selectRegion('Gyeongju')">Gyeongju</button>
-    <button class="region-btn" onclick="selectRegion('Gangneung')">Gangneung</button>
-    <button class="region-btn" onclick="selectRegion('Sokcho')">Sokcho</button>
-    <button class="region-btn" onclick="selectRegion('Jeonju')">Jeonju</button>
-
     <br>
     <button class="close-btn" onclick="closePopup()">Close</button>
   </div>
 </div>
 
-<!-- BOOKING POPUP -->
 <div class="popup" id="booking">
   <div class="popup-content">
-    <h3>Book Your Ride 🚐</h3>
-
-    <input type="text" id="name" placeholder="Your Name">
-    <input type="text" id="pickup" placeholder="Pickup Location">
-    <input type="text" id="dropoff" placeholder="Drop-off Location">
+    <h3>Book Ride 🚐</h3>
+    <input id="name" placeholder="Name">
+    <input id="pickup" placeholder="Pickup">
+    <input id="dropoff" placeholder="Dropoff">
     <input type="datetime-local" id="date">
-    <input type="number" id="people" placeholder="Passengers">
+    <input type="number" id="people" placeholder="People">
 
-    <button class="submit-btn" onclick="sendBooking()">Submit Booking</button>
+    <button class="submit-btn" onclick="sendBooking()">Submit</button>
     <button class="close-btn" onclick="closeBooking()">Close</button>
   </div>
 </div>
 
 <script>
-
-let currentRegion = null;
-
-const data = {
-  Andong: {
-    events: [
-      "<a href='http://www.hahoe.or.kr/english/sub1/sub1.asp' target='_blank'>Andong Mask Dance Festival</a>",
-      "Traditional Confucian Ceremony"
-    ],
-    nature: ["Nakdong River", "Buyongdae Cliff"],
-    culture: ["Hahoe Folk Village", "Dosan Seowon"],
-    shopping: ["Traditional Mask Shops"],
-    hotels: ["Hanok Stay", "River View Hotel"],
-    kpop: ["Korean Traditional Music Performances"],
-    food: ["Andong Jjimdak", "Heotjesabap"]
-  },
-  Suwon: {
-    events: ["Hwaseong Cultural Festival"],
-    nature: ["Gwanggyo Lake Park"],
-    culture: ["Hwaseong Fortress"],
-    shopping: ["Suwon Station Mall"],
-    hotels: ["Business Hotels"],
-    kpop: ["Concert Events"],
-    food: ["Suwon Galbi"]
-  }
-};
+let currentRegion=null;
 
 function openTravel(){
   document.getElementById("popup").style.display="flex";
 }
-
 function closePopup(){
   document.getElementById("popup").style.display="none";
 }
-
-function selectRegion(region){
-  currentRegion = region;
+function selectRegion(r){
+  currentRegion=r;
   closePopup();
-  document.getElementById("result").innerHTML =
-    "<b>Selected Region:</b> " + region;
+  document.getElementById("result").innerHTML="Selected: "+r;
 }
 
 function showCategory(type){
-  if(!currentRegion){
-    alert("Please select Travel region first.");
-    return;
-  }
-
-  if(data[currentRegion] && data[currentRegion][type]){
-    document.getElementById("result").innerHTML =
-      "<b>"+ currentRegion + " - " + type.toUpperCase() + "</b><br><br>" +
-      data[currentRegion][type].join("<br>");
-  } else {
-    document.getElementById("result").innerHTML =
-      "Information coming soon for " + currentRegion;
-  }
+  if(!currentRegion){alert("Select region first");return;}
+  document.getElementById("result").innerHTML = currentRegion+" - "+type;
 }
 
-/* BOOKING */
 function openBooking(){
   document.getElementById("booking").style.display="flex";
 }
-
 function closeBooking(){
   document.getElementById("booking").style.display="none";
 }
 
 function sendBooking(){
-  let name = document.getElementById("name").value;
-  let pickup = document.getElementById("pickup").value;
-  let dropoff = document.getElementById("dropoff").value;
-  let date = document.getElementById("date").value;
-  let people = document.getElementById("people").value;
+  let name=document.getElementById("name").value;
+  let pickup=document.getElementById("pickup").value;
+  let dropoff=document.getElementById("dropoff").value;
+  let date=document.getElementById("date").value;
+  let people=document.getElementById("people").value;
 
-  let message = `Hello, I want to book a ride.%0AName: ${name}%0APickup: ${pickup}%0ADropoff: ${dropoff}%0ADate: ${date}%0APeople: ${people}`;
-
-  window.open(`https://wa.me/821025963169?text=${message}`, "_blank");
+  let msg=`Hello%0AName:${name}%0APickup:${pickup}%0ADrop:${dropoff}%0ADate:${date}%0APeople:${people}`;
+  window.open(`https://wa.me/821025963169?text=${msg}`);
 }
-
 </script>
 
 </body>
