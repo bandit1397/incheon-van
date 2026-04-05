@@ -10,6 +10,10 @@ body {
   margin:0;
   font-family: Arial, sans-serif;
   background:#f2f4f8;
+}
+
+/* MAIN SCREEN */
+.main {
   display:flex;
   justify-content:center;
   align-items:center;
@@ -39,7 +43,10 @@ button {
 
 .arrive { background:#2d87da; }
 .depart { background:#2ca243; }
+.book { background:#ff7f00; }
+.region-toggle { background:#6f42c1; }
 
+/* CATEGORY */
 .category {
   position:absolute;
   width:130px;
@@ -51,10 +58,8 @@ button {
   align-items:center;
   border-radius:25px;
   cursor:pointer;
-  text-align:center;
 }
 
-/* Octagon positions */
 .travel { top:60px; left:50%; transform:translateX(-50%); }
 .events { top:160px; left:100px; }
 .nature { top:320px; left:100px; }
@@ -63,6 +68,39 @@ button {
 .hotels { bottom:160px; right:100px; }
 .kpop { top:320px; right:100px; }
 .food { top:160px; right:100px; }
+
+/* REGION PAGE */
+#regionPage {
+  display:none;
+  padding:30px;
+  text-align:center;
+}
+
+.region-btn {
+  margin:10px;
+  padding:12px 20px;
+  background:#1e90ff;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.category-btn {
+  margin:10px;
+  padding:10px 15px;
+  background:#ff7f00;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.back-btn {
+  margin-top:20px;
+  background:red;
+  padding:10px;
+}
 
 /* Popup */
 .popup {
@@ -85,27 +123,30 @@ button {
   text-align:center;
 }
 
-.region-btn {
-  margin:8px;
-  padding:10px 15px;
-  background:#1e90ff;
-  color:white;
-  border:none;
+/* Booking */
+input {
+  width:90%;
+  padding:10px;
+  margin:8px 0;
   border-radius:8px;
-  cursor:pointer;
+  border:1px solid #ccc;
+}
+
+.submit-btn {
+  background:#28a745;
 }
 
 .close-btn {
-  margin-top:15px;
   background:red;
-  padding:8px 12px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- OCTAGON BUTTONS -->
+<!-- MAIN -->
+<div class="main" id="mainPage">
+
 <div class="category travel" onclick="openTravel()">Travel</div>
 <div class="category events" onclick="showCategory('events')">Events</div>
 <div class="category nature" onclick="showCategory('nature')">Nature</div>
@@ -115,94 +156,133 @@ button {
 <div class="category kpop" onclick="showCategory('kpop')">K-Pop</div>
 <div class="category food" onclick="showCategory('food')">Food</div>
 
-<!-- CENTER -->
 <div class="center-box">
   <h2>Welcome to Korea 🇰🇷</h2>
   <p>Easy transport from Incheon Airport</p>
 
-  <button class="arrive">Arrive in Korea</button>
-  <button class="depart">Depart from Korea</button>
+  <a href="arrive.html">
+    <button class="arrive">Arrive in Korea</button>
+  </a>
 
-  <div id="result" style="margin-top:20px;"></div>
+  <a href="depart.html">
+    <button class="depart">Depart from Korea</button>
+  </a>
+
+  <button class="book" onclick="openBooking()">Book Now</button>
+
+  <!-- NEW BUTTON -->
+  <button class="region-toggle" onclick="openRegionPage()">Select Region</button>
+
+  <div id="result"></div>
 </div>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
+</div>
+
+<!-- REGION PAGE -->
+<div id="regionPage">
+
+<h2>Select Region</h2>
+
+<button class="region-btn" onclick="selectRegionPage('Andong')">Andong</button>
+<button class="region-btn" onclick="selectRegionPage('Seoul')">Seoul</button>
+<button class="region-btn" onclick="selectRegionPage('Incheon')">Incheon</button>
+
+<div id="regionContent"></div>
+
+<button class="back-btn" onclick="goBack()">Back</button>
+
+</div>
+
+<!-- BOOKING -->
+<div class="popup" id="booking">
   <div class="popup-content">
-    <h3>Select Travel Region</h3>
+    <h3>Book Your Ride 🚐</h3>
 
-    <button class="region-btn" onclick="selectRegion('Andong')">Andong</button>
-    <button class="region-btn" onclick="selectRegion('Suwon')">Suwon</button>
-    <button class="region-btn" onclick="selectRegion('Seoul')">Seoul</button>
-    <button class="region-btn" onclick="selectRegion('Busan')">Busan</button>
-    <button class="region-btn" onclick="selectRegion('Jeju')">Jeju</button>
-    <button class="region-btn" onclick="selectRegion('Incheon')">Incheon</button>
-    <button class="region-btn" onclick="selectRegion('Gyeongju')">Gyeongju</button>
-    <button class="region-btn" onclick="selectRegion('Gangneung')">Gangneung</button>
-    <button class="region-btn" onclick="selectRegion('Sokcho')">Sokcho</button>
-    <button class="region-btn" onclick="selectRegion('Jeonju')">Jeonju</button>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="pickup" placeholder="Pickup">
+    <input type="text" id="dropoff" placeholder="Drop-off">
+    <input type="datetime-local" id="date">
+    <input type="number" id="people" placeholder="Passengers">
 
-    <br>
-    <button class="close-btn" onclick="closePopup()">Close</button>
+    <button class="submit-btn" onclick="sendBooking()">Submit</button>
+    <button class="close-btn" onclick="closeBooking()">Close</button>
   </div>
 </div>
 
 <script>
 
-let currentRegion = null;
+/* 기존 기능 유지 */
+function openBooking(){
+  document.getElementById("booking").style.display="flex";
+}
+function closeBooking(){
+  document.getElementById("booking").style.display="none";
+}
 
-const data = {
+function sendBooking(){
+  let message = "Booking request";
+  window.open(`https://wa.me/821025963169?text=${message}`);
+}
+
+/* REGION PAGE */
+let selectedRegion = null;
+
+const regionData = {
   Andong: {
-    events: ["Andong Mask Dance Festival", "Traditional Confucian Ceremony"],
-    nature: ["Nakdong River", "Buyongdae Cliff"],
-    culture: ["Hahoe Folk Village", "Dosan Seowon"],
-    shopping: ["Traditional Mask Shops"],
-    hotels: ["Hanok Stay", "River View Hotel"],
-    kpop: ["Korean Traditional Music Performances"],
-    food: ["Andong Jjimdak", "Heotjesabap"]
+    events:["Mask Dance Festival","Confucian Ceremony","Folk Performance"],
+    nature:["Nakdong River","Buyongdae Cliff","Mountain Trails"],
+    culture:["Hahoe Village","Dosan Seowon","Traditional Houses"],
+    food:["Jjimdak","Heotjesabap","Salted Mackerel"],
+    kpop:["Traditional Music","Local 공연","문화 체험"],
+    hotels:["Hanok Stay","River Hotel","Guesthouse"]
   },
-  Suwon: {
-    events: ["Hwaseong Cultural Festival"],
-    nature: ["Gwanggyo Lake Park"],
-    culture: ["Hwaseong Fortress"],
-    shopping: ["Suwon Station Mall"],
-    hotels: ["Business Hotels"],
-    kpop: ["Concert Events"],
-    food: ["Suwon Galbi"]
+  Seoul: {
+    events:["Lantern Festival","Fireworks","Street 공연"],
+    nature:["Han River","Bukhansan","Namsan"],
+    culture:["Gyeongbokgung","Bukchon","Insadong"],
+    food:["BBQ","Tteokbokki","Bibimbap"],
+    kpop:["SM Town","HYBE","Concert Hall"],
+    hotels:["Lotte Hotel","Shilla","Business Hotel"]
+  },
+  Incheon: {
+    events:["Pentaport Rock","Fireworks","Harbor Festival"],
+    nature:["Songdo Park","Central Park","Beach"],
+    culture:["Chinatown","Open Port","Museum"],
+    food:["Jajangmyeon","Seafood","Street Food"],
+    kpop:["Concert","Dance Studio","Kpop Tour"],
+    hotels:["Sheraton","Holiday Inn","Airport Hotel"]
   }
-  // Other regions automatically supported same structure
 };
 
-function openTravel(){
-  document.getElementById("popup").style.display="flex";
+function openRegionPage(){
+  document.getElementById("mainPage").style.display="none";
+  document.getElementById("regionPage").style.display="block";
 }
 
-function closePopup(){
-  document.getElementById("popup").style.display="none";
+function goBack(){
+  document.getElementById("regionPage").style.display="none";
+  document.getElementById("mainPage").style.display="flex";
 }
 
-function selectRegion(region){
-  currentRegion = region;
-  closePopup();
-  document.getElementById("result").innerHTML =
-    "<b>Selected Region:</b> " + region;
+function selectRegionPage(region){
+  selectedRegion = region;
+
+  let html = `<h3>${region}</h3>`;
+
+  ["events","nature","culture","food","kpop","hotels"].forEach(cat=>{
+    html += `<button class="category-btn" onclick="showRegionData('${cat}')">${cat}</button>`;
+  });
+
+  html += `<div id="detail"></div>`;
+
+  document.getElementById("regionContent").innerHTML = html;
 }
 
-function showCategory(type){
+function showRegionData(type){
+  let items = regionData[selectedRegion][type];
 
-  if(!currentRegion){
-    alert("Please select Travel region first.");
-    return;
-  }
-
-  if(data[currentRegion] && data[currentRegion][type]){
-    document.getElementById("result").innerHTML =
-      "<b>"+ currentRegion + " - " + type.toUpperCase() + "</b><br><br>" +
-      data[currentRegion][type].join("<br>");
-  } else {
-    document.getElementById("result").innerHTML =
-      "Information coming soon for " + currentRegion;
-  }
+  document.getElementById("detail").innerHTML =
+    `<h4>${type.toUpperCase()}</h4>` + items.join("<br>");
 }
 
 </script>
