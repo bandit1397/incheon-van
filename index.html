@@ -46,29 +46,6 @@ button {
 .book { background:#ff7f00; }
 .region-toggle { background:#6f42c1; }
 
-/* CATEGORY */
-.category {
-  position:absolute;
-  width:130px;
-  height:130px;
-  background:#f47c4b;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:25px;
-  cursor:pointer;
-}
-
-.travel { top:60px; left:50%; transform:translateX(-50%); }
-.events { top:160px; left:100px; }
-.nature { top:320px; left:100px; }
-.culture { bottom:160px; left:100px; }
-.shopping { bottom:60px; left:50%; transform:translateX(-50%); }
-.hotels { bottom:160px; right:100px; }
-.kpop { top:320px; right:100px; }
-.food { top:160px; right:100px; }
-
 /* REGION PAGE */
 #regionPage {
   display:none;
@@ -147,49 +124,40 @@ input {
 <!-- MAIN -->
 <div class="main" id="mainPage">
 
-<div class="category travel" onclick="openTravel()">Travel</div>
-<div class="category events" onclick="showCategory('events')">Events</div>
-<div class="category nature" onclick="showCategory('nature')">Nature</div>
-<div class="category culture" onclick="showCategory('culture')">Culture</div>
-<div class="category shopping" onclick="showCategory('shopping')">Shopping</div>
-<div class="category hotels" onclick="showCategory('hotels')">Hotels</div>
-<div class="category kpop" onclick="showCategory('kpop')">K-Pop</div>
-<div class="category food" onclick="showCategory('food')">Food</div>
+  <div class="center-box">
+    <h2>Welcome to Korea 🇰🇷</h2>
+    <p>Easy transport from Incheon Airport</p>
 
-<div class="center-box">
-  <h2>Welcome to Korea 🇰🇷</h2>
-  <p>Easy transport from Incheon Airport</p>
+    <a href="arrive.html">
+      <button class="arrive">Arrive in Korea</button>
+    </a>
 
-  <a href="arrive.html">
-    <button class="arrive">Arrive in Korea</button>
-  </a>
+    <a href="depart.html">
+      <button class="depart">Depart from Korea</button>
+    </a>
 
-  <a href="depart.html">
-    <button class="depart">Depart from Korea</button>
-  </a>
+    <button class="book" onclick="openBooking()">Book Now</button>
 
-  <button class="book" onclick="openBooking()">Book Now</button>
+    <!-- REGION BUTTON -->
+    <button class="region-toggle" onclick="openRegionPage()">Select Region</button>
 
-  <!-- NEW BUTTON -->
-  <button class="region-toggle" onclick="openRegionPage()">Select Region</button>
-
-  <div id="result"></div>
-</div>
+    <div id="result"></div>
+  </div>
 
 </div>
 
 <!-- REGION PAGE -->
 <div id="regionPage">
 
-<h2>Select Region</h2>
+  <h2>Select Region</h2>
 
-<button class="region-btn" onclick="selectRegionPage('Andong')">Andong</button>
-<button class="region-btn" onclick="selectRegionPage('Seoul')">Seoul</button>
-<button class="region-btn" onclick="selectRegionPage('Incheon')">Incheon</button>
+  <button class="region-btn" onclick="selectRegionPage('Andong')">Andong</button>
+  <button class="region-btn" onclick="selectRegionPage('Seoul')">Seoul</button>
+  <button class="region-btn" onclick="selectRegionPage('Incheon')">Incheon</button>
 
-<div id="regionContent"></div>
+  <div id="regionContent"></div>
 
-<button class="back-btn" onclick="goBack()">Back</button>
+  <button class="back-btn" onclick="goBack()">Back</button>
 
 </div>
 
@@ -211,17 +179,25 @@ input {
 
 <script>
 
-/* 기존 기능 유지 */
+/* BOOKING (기존 유지) */
 function openBooking(){
   document.getElementById("booking").style.display="flex";
 }
+
 function closeBooking(){
   document.getElementById("booking").style.display="none";
 }
 
 function sendBooking(){
-  let message = "Booking request";
-  window.open(`https://wa.me/821025963169?text=${message}`);
+  let name = document.getElementById("name").value;
+  let pickup = document.getElementById("pickup").value;
+  let dropoff = document.getElementById("dropoff").value;
+  let date = document.getElementById("date").value;
+  let people = document.getElementById("people").value;
+
+  let message = `Hello, I want to book a ride.%0AName: ${name}%0APickup: ${pickup}%0ADropoff: ${dropoff}%0ADate: ${date}%0APeople: ${people}`;
+
+  window.open(`https://wa.me/821025963169?text=${message}`, "_blank");
 }
 
 /* REGION PAGE */
