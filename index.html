@@ -12,7 +12,7 @@ body {
   background:#f2f4f8;
 }
 
-/* MAIN SCREEN */
+/* MAIN */
 .main {
   display:flex;
   justify-content:center;
@@ -20,7 +20,6 @@ body {
   height:100vh;
 }
 
-/* Center Card */
 .center-box {
   text-align:center;
   background:#e6e6e6;
@@ -46,6 +45,32 @@ button {
 .book { background:#ff7f00; }
 .region-toggle { background:#6f42c1; }
 
+/* INFO PAGE */
+#infoPage {
+  display:none;
+  padding:30px;
+  text-align:center;
+}
+
+.info-box {
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  max-width:600px;
+  margin:0 auto;
+  text-align:left;
+}
+
+.back-btn {
+  margin-top:20px;
+  background:red;
+  padding:10px;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
 /* REGION PAGE */
 #regionPage {
   display:none;
@@ -60,35 +85,26 @@ button {
   color:white;
   border:none;
   border-radius:10px;
-  cursor:pointer;
 }
 
 .category-btn {
   margin:10px;
-  padding:10px 15px;
+  padding:10px;
   background:#ff7f00;
   color:white;
   border:none;
   border-radius:10px;
-  cursor:pointer;
 }
 
 .item-btn {
   display:block;
   margin:8px auto;
-  padding:8px 12px;
+  padding:8px;
   width:200px;
   background:#17a2b8;
   color:white;
   border:none;
   border-radius:8px;
-  cursor:pointer;
-}
-
-.back-btn {
-  margin-top:20px;
-  background:red;
-  padding:10px;
 }
 
 /* Popup */
@@ -112,22 +128,14 @@ button {
   text-align:center;
 }
 
-/* Booking */
 input {
   width:90%;
   padding:10px;
   margin:8px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
 }
 
-.submit-btn {
-  background:#28a745;
-}
-
-.close-btn {
-  background:red;
-}
+.submit-btn { background:#28a745; }
+.close-btn { background:red; }
 </style>
 </head>
 
@@ -135,10 +143,13 @@ input {
 
 <!-- MAIN -->
 <div class="main" id="mainPage">
-
   <div class="center-box">
     <h2>Welcome to Korea 🇰🇷</h2>
-    <p>Easy transport from Incheon Airport</p>
+
+    <!-- CLICKABLE TEXT -->
+    <p onclick="openInfoPage()" style="cursor:pointer; color:blue;">
+      Easy transport from Incheon Airport
+    </p>
 
     <a href="arrive.html">
       <button class="arrive">Arrive in Korea</button>
@@ -149,17 +160,47 @@ input {
     </a>
 
     <button class="book" onclick="openBooking()">Book Now</button>
-
     <button class="region-toggle" onclick="openRegionPage()">Select Region</button>
-
-    <div id="result"></div>
   </div>
+</div>
 
+<!-- INFO PAGE -->
+<div id="infoPage">
+  <div class="info-box">
+    <h2>🚐 Incheon Easy Van Service</h2>
+
+    <h3>Vehicle</h3>
+    <p>• 12-seater luxury van<br>
+       • Comfortable seats, air conditioning<br>
+       • Professional driver</p>
+
+    <h3>Routes & Price</h3>
+    <p>
+    • Incheon → Seoul: 70,000 ~ 100,000 KRW (1 hour)<br>
+    • Incheon → Andong: 250,000 ~ 300,000 KRW (3 hours)<br>
+    • Incheon → Incheon city: 40,000 ~ 70,000 KRW (30 min)
+    </p>
+
+    <h3>Luggage</h3>
+    <p>
+    • Up to 10 suitcases<br>
+    • Large luggage allowed<br>
+    • Golf bags / strollers OK
+    </p>
+
+    <h3>Service</h3>
+    <p>
+    • Airport pickup sign service<br>
+    • Door-to-door hotel drop<br>
+    • 24-hour reservation
+    </p>
+
+    <button class="back-btn" onclick="backToMain()">Back to Main</button>
+  </div>
 </div>
 
 <!-- REGION PAGE -->
 <div id="regionPage">
-
   <h2>Select Region</h2>
 
   <button class="region-btn" onclick="selectRegionPage('Andong')">Andong</button>
@@ -169,7 +210,6 @@ input {
   <div id="regionContent"></div>
 
   <button class="back-btn" onclick="goBack()">Back</button>
-
 </div>
 
 <!-- BOOKING -->
@@ -190,15 +230,24 @@ input {
 
 <script>
 
+/* INFO PAGE */
+function openInfoPage(){
+  document.getElementById("mainPage").style.display="none";
+  document.getElementById("infoPage").style.display="block";
+}
+
+function backToMain(){
+  document.getElementById("infoPage").style.display="none";
+  document.getElementById("mainPage").style.display="flex";
+}
+
 /* BOOKING */
 function openBooking(){
   document.getElementById("booking").style.display="flex";
 }
-
 function closeBooking(){
   document.getElementById("booking").style.display="none";
 }
-
 function sendBooking(){
   let name = document.getElementById("name").value;
   let pickup = document.getElementById("pickup").value;
@@ -207,11 +256,10 @@ function sendBooking(){
   let people = document.getElementById("people").value;
 
   let message = `Hello, I want to book a ride.%0AName: ${name}%0APickup: ${pickup}%0ADropoff: ${dropoff}%0ADate: ${date}%0APeople: ${people}`;
-
-  window.open(`https://wa.me/821025963169?text=${message}`, "_blank");
+  window.open(`https://wa.me/821025963169?text=${message}`);
 }
 
-/* REGION DATA */
+/* REGION */
 let selectedRegion = null;
 
 const regionData = {
