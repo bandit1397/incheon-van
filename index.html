@@ -73,6 +73,18 @@ button {
   cursor:pointer;
 }
 
+.item-btn {
+  display:block;
+  margin:8px auto;
+  padding:8px 12px;
+  width:200px;
+  background:#17a2b8;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
 .back-btn {
   margin-top:20px;
   background:red;
@@ -138,7 +150,6 @@ input {
 
     <button class="book" onclick="openBooking()">Book Now</button>
 
-    <!-- REGION BUTTON -->
     <button class="region-toggle" onclick="openRegionPage()">Select Region</button>
 
     <div id="result"></div>
@@ -179,7 +190,7 @@ input {
 
 <script>
 
-/* BOOKING (기존 유지) */
+/* BOOKING */
 function openBooking(){
   document.getElementById("booking").style.display="flex";
 }
@@ -200,17 +211,21 @@ function sendBooking(){
   window.open(`https://wa.me/821025963169?text=${message}`, "_blank");
 }
 
-/* REGION PAGE */
+/* REGION DATA */
 let selectedRegion = null;
 
 const regionData = {
   Andong: {
+    hotels:[
+      {name:"Hanok Stay", link:"http://rkj.co.kr/en-andong/"},
+      {name:"River Hotel"},
+      {name:"Guesthouse"}
+    ],
     events:["Mask Dance Festival","Confucian Ceremony","Folk Performance"],
     nature:["Nakdong River","Buyongdae Cliff","Mountain Trails"],
     culture:["Hahoe Village","Dosan Seowon","Traditional Houses"],
     food:["Jjimdak","Heotjesabap","Salted Mackerel"],
-    kpop:["Traditional Music","Local 공연","문화 체험"],
-    hotels:["Hanok Stay","River Hotel","Guesthouse"]
+    kpop:["Traditional Music","Local 공연","문화 체험"]
   },
   Seoul: {
     events:["Lantern Festival","Fireworks","Street 공연"],
@@ -256,9 +271,17 @@ function selectRegionPage(region){
 
 function showRegionData(type){
   let items = regionData[selectedRegion][type];
+  let html = `<h4>${type.toUpperCase()}</h4>`;
 
-  document.getElementById("detail").innerHTML =
-    `<h4>${type.toUpperCase()}</h4>` + items.join("<br>");
+  items.forEach(item=>{
+    if(typeof item === "object" && item.link){
+      html += `<button class="item-btn" onclick="window.open('${item.link}','_blank')">${item.name}</button>`;
+    } else {
+      html += `<div>${item.name || item}</div>`;
+    }
+  });
+
+  document.getElementById("detail").innerHTML = html;
 }
 
 </script>
