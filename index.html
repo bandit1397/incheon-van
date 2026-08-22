@@ -128,6 +128,10 @@ button {
   width:auto;
 }
 
+.map-btn {
+  background:#28a745;
+}
+
 /* Popup */
 .popup {
   position:fixed;
@@ -302,7 +306,7 @@ const regionData = {
     ],
     food:[
       {name:"Andong Braised Chicken (Andong Jjimdak)", desc:"A savory-sweet braised chicken dish cooked with soy sauce, potatoes, carrots, and glass noodles — Andong's most famous local specialty.", link:"https://www.tourandong.com/eng/sub2/sub1.cshtml/"},
-      {name:"Andong Guksu (Noodles)", desc:"A traditional hand-made noodle soup in a light anchovy or beef broth, often served with a side of Andong's local kimchi.", link:"https://www.confucianland.com/eng/main/main.html/"},
+      {name:"Andong Guksu (Noodles)", desc:"A traditional hand-made noodle soup in a light anchovy or beef broth, often served with a side of Andong's local kimchi."},
       {name:"Andong Korean Native Cattle (Andong Hanwoo)", desc:"Premium Korean beef raised in the Andong region, prized for its marbling and tenderness — best enjoyed grilled at a local hanwoo restaurant.", link:"https://www.tourandong.com/eng/sub2/sub2.cshtml/"}
     ],
     kpop:[
@@ -422,6 +426,10 @@ function showRegionData(type){
 function showItemDetail(type, idx){
   let item = regionData[selectedRegion][type][idx];
   let html = `<div class="detail-box"><h5>${item.name}</h5><p>${item.desc}</p>`;
+
+  let mapQuery = encodeURIComponent(`${item.name} ${selectedRegion} Korea`);
+  let mapUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+  html += `<button class="link-btn map-btn" onclick="window.open('${mapUrl}','_blank')">📍 Find on Map</button>`;
 
   if(item.link){
     html += `<button class="link-btn" onclick="window.open('${item.link}','_blank')">More Info</button>`;
