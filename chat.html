@@ -15,7 +15,7 @@ body {
 }
 
 h1 {
-  margin-top:40px;
+  margin-top:30px;
   font-size:24px;
 }
 
@@ -42,6 +42,30 @@ button {
   margin-right:auto;
 }
 
+.lang-bar {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+.lang-btn {
+  width:auto;
+  display:inline-block;
+  padding:8px 14px;
+  margin:0;
+  font-size:14px;
+  border-radius:20px;
+  background:#e0e0e0;
+  color:#333;
+}
+
+.lang-btn.active {
+  background:#6f42c1;
+  color:#fff;
+}
+
 .whatsapp {
   background:#25D366;
   color:#fff;
@@ -63,26 +87,97 @@ button {
 
 <body>
 
-<h1>Chat with Your Driver 💬</h1>
+<div class="lang-bar">
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</button>
+  <button class="lang-btn" onclick="setLang('ja')">🇯🇵 日本語</button>
+  <button class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+</div>
 
-<p>
+<h1 id="pageTitle">Chat with Your Driver 💬</h1>
+
+<p id="pageSubtitle">
 Choose your preferred messenger.<br>
 Fast response · Easy communication
 </p>
 
 <!-- WhatsApp -->
-<a href="https://wa.me/821025963169?text=Hello%20I%20need%20airport%20transport" target="_blank">
-  <button class="whatsapp">Chat on WhatsApp</button>
+<a id="whatsappLink" href="#" target="_blank">
+  <button class="whatsapp" id="whatsappBtn">Chat on WhatsApp</button>
 </a>
 
 <!-- Kakao -->
 <a href="https://pf.kakao.com/_bandit1397" target="_blank">
-  <button class="kakao">Chat on KakaoTalk</button>
+  <button class="kakao" id="kakaoBtn">Chat on KakaoTalk</button>
 </a>
 
 <a href="index.html">
-  <button class="back">Back to Main</button>
+  <button class="back" id="backBtn">Back to Main</button>
 </a>
+
+<script>
+const translations = {
+  en: {
+    title: "Chat with Your Driver 💬",
+    subtitle: "Choose your preferred messenger.<br>Fast response · Easy communication",
+    whatsapp: "Chat on WhatsApp",
+    kakao: "Chat on KakaoTalk",
+    back: "Back to Main",
+    greeting: "Hello, I need airport transport."
+  },
+  zh: {
+    title: "与您的司机聊天 💬",
+    subtitle: "请选择您常用的聊天软件。<br>快速回复 · 沟通顺畅",
+    whatsapp: "通过 WhatsApp 聊天",
+    kakao: "通过 KakaoTalk 聊天",
+    back: "返回主页",
+    greeting: "您好，我需要机场接送服务。"
+  },
+  ja: {
+    title: "ドライバーとチャット 💬",
+    subtitle: "ご希望のメッセンジャーを選んでください。<br>迅速な返信・スムーズなやり取り",
+    whatsapp: "WhatsAppでチャット",
+    kakao: "KakaoTalkでチャット",
+    back: "メインに戻る",
+    greeting: "こんにちは、空港送迎サービスが必要です。"
+  },
+  es: {
+    title: "Chatea con tu Conductor 💬",
+    subtitle: "Elige tu mensajero preferido.<br>Respuesta rápida · Comunicación fácil",
+    whatsapp: "Chatear por WhatsApp",
+    kakao: "Chatear por KakaoTalk",
+    back: "Volver al Inicio",
+    greeting: "Hola, necesito transporte al aeropuerto."
+  }
+};
+
+const englishGreeting = translations.en.greeting;
+
+function setLang(lang){
+  const t = translations[lang];
+
+  document.getElementById("pageTitle").innerText = t.title;
+  document.getElementById("pageSubtitle").innerHTML = t.subtitle;
+  document.getElementById("whatsappBtn").innerText = t.whatsapp;
+  document.getElementById("kakaoBtn").innerText = t.kakao;
+  document.getElementById("backBtn").innerText = t.back;
+
+  document.querySelectorAll(".lang-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add("active");
+
+  let message = t.greeting;
+  if(lang !== "en"){
+    message += ` (EN: ${englishGreeting})`;
+  }
+
+  document.getElementById("whatsappLink").href =
+    `https://wa.me/821025963169?text=${encodeURIComponent(message)}`;
+
+  document.documentElement.lang = lang;
+}
+
+setLang('en');
+</script>
 
 </body>
 </html>
