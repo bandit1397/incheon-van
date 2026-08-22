@@ -107,6 +107,27 @@ button {
   border-radius:8px;
 }
 
+.detail-box {
+  background:#fff8e6;
+  border:1px solid #ffd98a;
+  padding:15px;
+  border-radius:10px;
+  margin:15px auto;
+  max-width:320px;
+  text-align:left;
+}
+
+.detail-box h5 {
+  margin:0 0 8px 0;
+}
+
+.link-btn {
+  background:#17a2b8;
+  margin-top:10px;
+  padding:8px 14px;
+  width:auto;
+}
+
 /* Popup */
 .popup {
   position:fixed;
@@ -264,52 +285,100 @@ let selectedRegion = null;
 
 const regionData = {
   Andong: {
-     hotels:[
-      {name:"Hanok Stay POONGSONGJAE Andong", link:"https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=33707/"},
-      {name:"Kase Business Hotel", link:"https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=44848/"},
-      {name:"Gotaya Guesthouse", link:"https://www.instagram.com/guest.house.andong.gotaya/?utm_source=chatgpt.com"}
-    ],
-
     events:[
-      {name:"Mask Dance Festival", link:"https://www.tourandong.com/eng/sub2/sub1.cshtml/"},
-      {name:"Confucian Culture Experience Program", link:"https://www.confucianland.com/eng/main/main.html/"},
-      {name:"Moonlight Walk at Woryeonggyo Bridge", link:"https://www.tourandong.com/eng/sub2/sub2.cshtml/"}
+      {name:"Mask Dance Festival", desc:"Korea's largest mask dance festival, held every autumn in Andong. Performers from around the world wear traditional masks (including the famous Hahoe masks) and perform folk dances in the streets and open-air stages.", link:"https://www.tourandong.com/eng/sub2/sub1.cshtml/"},
+      {name:"Confucian Culture Experience Program", desc:"A hands-on program at Confucianland where visitors can try traditional tea ceremonies, calligraphy, and Confucian etiquette lessons in a recreated Joseon-era academy setting.", link:"https://www.confucianland.com/eng/main/main.html/"},
+      {name:"Moonlight Walk at Woryeonggyo Bridge", desc:"Korea's longest wooden footbridge, beautifully lit up at night. A relaxed evening walk over the Nakdong River with reflections of the bridge and moon on the water.", link:"https://www.tourandong.com/eng/sub2/sub2.cshtml/"}
     ],
     nature:[
-      {name:"Toegye Yedeon Trail", link:"https://www.tourandong.com/eng/sub1/sub8.cshtml/"},
-      {name:"Dosanseowon Area", link:"https://www.tourandong.com/eng/sub1/sub2.cshtml/"},
-      {name:"South East Area", link:"https://www.tourandong.com/eng/sub1/sub4.cshtml/"}
+      {name:"Toegye Yedeon Trail", desc:"A scenic walking trail said to follow the path Confucian scholar Toegye Yi Hwang once walked, winding through pine forests and quiet countryside along the Nakdong River.", link:"https://www.tourandong.com/eng/sub1/sub8.cshtml/"},
+      {name:"Dosanseowon Area", desc:"A riverside valley surrounding Dosan Seowon Confucian academy, with pine groves, walking paths, and views over the Nakdong River — popular for quiet nature walks.", link:"https://www.tourandong.com/eng/sub1/sub2.cshtml/"},
+      {name:"South East Area", desc:"A rural stretch of Andong known for rolling hills, farmland, and small river valleys, offering a peaceful countryside landscape away from the city center.", link:"https://www.tourandong.com/eng/sub1/sub4.cshtml/"}
     ],
-   
     culture:[
-      {name:"Hahoe Village Area", link:"https://www.tourandong.com/eng/sub1/sub1.cshtml/"},
-      {name:"Dosanseowon Area", link:"https://www.tourandong.com/eng/sub1/sub2.cshtml/"},
-      {name:"South East Area", link:"https://www.tourandong.com/eng/sub1/sub4.cshtml/"}
+      {name:"Hahoe Village Area", desc:"A UNESCO World Heritage folk village where traditional thatched and tiled houses have been preserved for over 600 years, still home to descendants of the original clans.", link:"https://www.tourandong.com/eng/sub1/sub1.cshtml/"},
+      {name:"Andong Folk Museum", desc:"A museum dedicated to the daily life, rituals, and customs of the Andong region, with exhibits on traditional funerals, weddings, and the famous Hahoe mask dance."},
+      {name:"Bongjeongsa Temple", desc:"Home to Geungnakjeon, the oldest surviving wooden building in Korea. A quiet mountainside temple showcasing centuries of traditional Korean Buddhist architecture."}
     ],
-
-    
     food:[
-      {name:"Andong Braised Chicken (Andong Jjimdak)", link:"https://www.tourandong.com/eng/sub2/sub1.cshtml/"},
-      {name:"Andong Guksu (Noodles)", link:"https://www.confucianland.com/eng/main/main.html/"},
-      {name:"Andong Korean Native Cattle (Andong Hanwoo)", link:"https://www.tourandong.com/eng/sub2/sub2.cshtml/"}
+      {name:"Andong Braised Chicken (Andong Jjimdak)", desc:"A savory-sweet braised chicken dish cooked with soy sauce, potatoes, carrots, and glass noodles — Andong's most famous local specialty.", link:"https://www.tourandong.com/eng/sub2/sub1.cshtml/"},
+      {name:"Andong Guksu (Noodles)", desc:"A traditional hand-made noodle soup in a light anchovy or beef broth, often served with a side of Andong's local kimchi.", link:"https://www.confucianland.com/eng/main/main.html/"},
+      {name:"Andong Korean Native Cattle (Andong Hanwoo)", desc:"Premium Korean beef raised in the Andong region, prized for its marbling and tenderness — best enjoyed grilled at a local hanwoo restaurant.", link:"https://www.tourandong.com/eng/sub2/sub2.cshtml/"}
     ],
-    kpop:["Traditional Music","Local 공연","문화 체험"]
+    kpop:[
+      {name:"Andong Mask Dance Festival Fusion Stage", desc:"A special festival stage where traditional mask dance performances are blended with modern K-pop choreography and music, popular with younger visitors."},
+      {name:"Local Idol Busking at Andong Culture & Tourism Complex", desc:"An open plaza near the tourism complex where regional K-pop cover dance teams occasionally perform for passersby on weekends."},
+      {name:"K-pop Dance Class at Andong Youth Center", desc:"Community dance classes open to visitors, teaching popular K-pop choreography in a fun, casual group setting."}
+    ],
+    hotels:[
+      {name:"Hanok Stay POONGSONGJAE Andong", desc:"A traditional hanok guesthouse offering an authentic Korean sleeping experience with heated ondol floors, set in a quiet residential area near the old town.", link:"https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=33707/"},
+      {name:"Kase Business Hotel", desc:"A convenient, budget-friendly business hotel located close to Andong's downtown, ideal for short stays before or after sightseeing.", link:"https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=44848/"},
+      {name:"Gotaya Guesthouse", desc:"A cozy, family-run guesthouse near Hahoe Village offering a relaxed, home-like atmosphere and easy access to the folk village.", link:"https://www.instagram.com/guest.house.andong.gotaya/?utm_source=chatgpt.com"}
+    ]
   },
   Seoul: {
-    events:["Lantern Festival","Fireworks","Street 공연"],
-    nature:["Han River","Bukhansan","Namsan"],
-    culture:["Gyeongbokgung","Bukchon","Insadong"],
-    food:["BBQ","Tteokbokki","Bibimbap"],
-    kpop:["SM Town","HYBE","Concert Hall"],
-    hotels:["Lotte Hotel","Shilla","Business Hotel"]
+    events:[
+      {name:"Seoul Lantern Festival", desc:"An annual autumn festival along Cheonggyecheon Stream in downtown Seoul, featuring hundreds of illuminated lantern sculptures on rotating yearly themes."},
+      {name:"Han River Fireworks Festival", desc:"A large-scale fireworks show held along the Han River each fall, drawing huge crowds who watch from riverside parks and bridges."},
+      {name:"Hongdae Street Performances", desc:"The Hongdae area near Hongik University comes alive on weekends with live busking, indie bands, and dance crews performing in the streets."}
+    ],
+    nature:[
+      {name:"Han River Park", desc:"A chain of riverside parks running through the city, perfect for cycling, picnics, and watching the sunset over the water."},
+      {name:"Bukhansan National Park", desc:"Granite peaks and forested hiking trails within the city limits, one of the most-visited national parks in the world relative to its size."},
+      {name:"Namsan Park", desc:"A central hill park with walking trails, a cable car, and panoramic views of the city skyline from N Seoul Tower."}
+    ],
+    culture:[
+      {name:"Gyeongbokgung Palace", desc:"The main royal palace of the Joseon Dynasty, famous for its grand throne hall, scenic Gyeonghoeru Pavilion, and the changing-of-the-guard ceremony."},
+      {name:"Bukchon Hanok Village", desc:"A hillside neighborhood of traditional hanok houses between Gyeongbokgung and Changdeokgung, with narrow alleys offering great city views."},
+      {name:"Insadong", desc:"A traditional culture street known for art galleries, antique shops, tea houses, and stalls selling Korean handicrafts and calligraphy."}
+    ],
+    food:[
+      {name:"Korean BBQ (Gogigui)", desc:"Grilled meat dishes such as galbi (marbled short rib) and samgyeopsal (pork belly), cooked tableside and wrapped in lettuce with garlic and sauces."},
+      {name:"Tteokbokki", desc:"Chewy rice cakes stir-fried in a spicy-sweet gochujang sauce — one of Korea's most iconic street food dishes."},
+      {name:"Bibimbap", desc:"A mixed rice bowl topped with seasoned vegetables, meat, a fried egg, and gochujang, stirred together just before eating."}
+    ],
+    kpop:[
+      {name:"HYBE Insight & SMTOWN Exhibits", desc:"Entertainment agency exhibition halls with photo zones, stage replicas, and merchandise related to popular K-pop groups."},
+      {name:"Music Broadcast Studios", desc:"Broadcasting stations that host weekly live music shows, occasionally offering a chance to see idol groups perform or record."},
+      {name:"Gangnam K-Star Road", desc:"A street lined with tall GangnamDol bear statues, each decorated to honor a different K-pop artist or group."}
+    ],
+    hotels:[
+      {name:"Lotte Hotel Seoul", desc:"A 5-star hotel in central Myeongdong, within walking distance of shopping streets, palaces, and major subway lines."},
+      {name:"Shilla Stay", desc:"A reliable business-class hotel chain with multiple locations across Seoul, offering clean, modern rooms at a moderate price."},
+      {name:"Myeongdong Business Hotel", desc:"Budget-friendly hotel options in the heart of Seoul's busiest shopping and street food district."}
+    ]
   },
   Incheon: {
-    events:["Pentaport Rock","Fireworks","Harbor Festival"],
-    nature:["Songdo Park","Central Park","Beach"],
-    culture:["Chinatown","Open Port","Museum"],
-    food:["Jajangmyeon","Seafood","Street Food"],
-    kpop:["Concert","Dance Studio","Kpop Tour"],
-    hotels:["Sheraton","Holiday Inn","Airport Hotel"]
+    events:[
+      {name:"Pentaport Rock Festival", desc:"Korea's largest international rock music festival, held annually at Songdo, drawing both domestic and international acts."},
+      {name:"Incheon Fireworks Festival", desc:"A fireworks display over Incheon's waterfront celebrating the city's identity as Korea's historic gateway port."},
+      {name:"Incheon Open Port Culture Festival", desc:"A festival celebrating Incheon's history as Korea's first modern port, with parades, performances, and historic reenactments."}
+    ],
+    nature:[
+      {name:"Songdo Central Park", desc:"A waterfront park in Incheon's futuristic new town, featuring canals, boat rides, and skyline views of Songdo's high-rises."},
+      {name:"Wolmido Island", desc:"A seaside park known for its promenade, amusement rides, seafood restaurants, and popular sunset views over the water."},
+      {name:"Yeongjongdo Beach", desc:"A beach getaway near Incheon Airport, known for wide sand flats at low tide and easy access for a quick coastal escape."}
+    ],
+    culture:[
+      {name:"Incheon Chinatown", desc:"Korea's oldest and largest Chinatown, featuring vividly painted Chinese-style buildings, gates, and the birthplace of jajangmyeon."},
+      {name:"Incheon Open Port Area", desc:"A historic district of early 20th-century buildings from Incheon's days as a treaty port, including former banks, trading houses, and consulates."},
+      {name:"Incheon Metropolitan City Museum", desc:"A museum tracing Incheon's transformation from a small fishing village into Korea's modern maritime gateway."}
+    ],
+    food:[
+      {name:"Jajangmyeon", desc:"Noodles in a savory black bean sauce, said to have originated in Incheon's Chinatown and now one of Korea's most beloved comfort foods."},
+      {name:"Fresh Seafood at Sorae Port", desc:"A working fishing port and market known for fresh shellfish and seasonal catches, sold straight off the boats."},
+      {name:"Street Snacks near Chinatown", desc:"Popular street food stalls near Chinatown serving hotteok (sweet filled pancakes) and other fried Korean-Chinese snacks."}
+    ],
+    kpop:[
+      {name:"Yellow Ocean K-pop Concert Hall", desc:"A concert venue in Incheon that hosts large-scale K-pop concerts and fan events throughout the year."},
+      {name:"Songdo Convensia", desc:"A major convention center in Songdo that occasionally hosts K-pop fan meetings, award shows, and idol events."},
+      {name:"Incheon K-pop Dance Cover Festival", desc:"An annual event where fan dance teams from around the world compete performing K-pop choreography covers."}
+    ],
+    hotels:[
+      {name:"Paradise City Hotel & Resort", desc:"A luxury resort near the airport featuring a casino, spa, art park, and indoor water park, popular for both short layovers and longer stays."},
+      {name:"Incheon Airport Hotel", desc:"A convenient hotel right at the airport, ideal for early morning flights or long layovers between connections."},
+      {name:"Holiday Inn Songdo", desc:"A modern business hotel in Incheon's Songdo International City, close to Central Park and the convention district."}
+    ]
   }
 };
 
@@ -341,15 +410,26 @@ function showRegionData(type){
   let items = regionData[selectedRegion][type];
   let html = `<h4>${type.toUpperCase()}</h4>`;
 
-  items.forEach(item=>{
-    if(typeof item === "object" && item.link){
-      html += `<button class="item-btn" onclick="window.open('${item.link}','_blank')">${item.name}</button>`;
-    } else {
-      html += `<div>${item.name || item}</div>`;
-    }
+  items.forEach((item, idx)=>{
+    html += `<button class="item-btn" onclick="showItemDetail('${type}', ${idx})">${item.name}</button>`;
   });
 
+  html += `<div id="itemDetail"></div>`;
+
   document.getElementById("detail").innerHTML = html;
+}
+
+function showItemDetail(type, idx){
+  let item = regionData[selectedRegion][type][idx];
+  let html = `<div class="detail-box"><h5>${item.name}</h5><p>${item.desc}</p>`;
+
+  if(item.link){
+    html += `<button class="link-btn" onclick="window.open('${item.link}','_blank')">More Info</button>`;
+  }
+
+  html += `</div>`;
+
+  document.getElementById("itemDetail").innerHTML = html;
 }
 
 </script>
