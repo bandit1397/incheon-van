@@ -132,6 +132,10 @@ button {
   background:#28a745;
 }
 
+.search-btn {
+  background:#6f42c1;
+}
+
 /* Popup */
 .popup {
   position:fixed;
@@ -315,8 +319,8 @@ const regionData = {
       {name:"K-pop Dance Class at Andong Youth Center", desc:"Community dance classes open to visitors, teaching popular K-pop choreography in a fun, casual group setting."}
     ],
     hotels:[
-      {name:"Hanok Stay POONGSONGJAE Andong", desc:"A traditional hanok guesthouse offering an authentic Korean sleeping experience with heated ondol floors, set in a quiet residential area near the old town.", link:"https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=33707/"},
-      {name:"Kase Business Hotel", desc:"A convenient, budget-friendly business hotel located close to Andong's downtown, ideal for short stays before or after sightseeing.", link:"https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=44848/"},
+      {name:"Hanok Stay POONGSONGJAE Andong", desc:"A traditional hanok guesthouse offering an authentic Korean sleeping experience with heated ondol floors, set in a quiet residential area near the old town."},
+      {name:"Kase Business Hotel", desc:"A convenient, budget-friendly business hotel located close to Andong's downtown, ideal for short stays before or after sightseeing."},
       {name:"Gotaya Guesthouse", desc:"A cozy, family-run guesthouse near Hahoe Village offering a relaxed, home-like atmosphere and easy access to the folk village.", link:"https://www.instagram.com/guest.house.andong.gotaya/?utm_source=chatgpt.com"}
     ]
   },
@@ -433,6 +437,10 @@ function showItemDetail(type, idx){
 
   if(item.link){
     html += `<button class="link-btn" onclick="window.open('${item.link}','_blank')">More Info</button>`;
+  } else {
+    let searchQuery = encodeURIComponent(`${item.name} ${selectedRegion}`);
+    let searchUrl = `https://www.google.com/search?q=${searchQuery}`;
+    html += `<button class="link-btn search-btn" onclick="window.open('${searchUrl}','_blank')">🔍 Search Online</button>`;
   }
 
   html += `</div>`;
